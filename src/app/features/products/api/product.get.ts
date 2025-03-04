@@ -9,7 +9,7 @@ import { envionment } from "../../../../environments/environments";
   })
 
 export class ProductGet {
-    API_URL = envionment.productsUrl
+    private API_URL = envionment.productsUrl
 
     constructor(private http: HttpClient) { }
     getProducts(): Observable<Product[]> {

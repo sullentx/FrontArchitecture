@@ -1,0 +1,25 @@
+<div class="product-list">
+    <h2>Lista de Clientes Registrados</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Apellidos</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let client of clients">
+          <td>{{ client.ID }}</td>
+          <td>{{ client.Name }}</td>
+          <td>{{ client.LastName| currency }}</td>
+          <td>{{ client.Email }}</td>
+          <td>
+            <button (click)="editClient(client)" class="btn btn-edit">Editar</button>
+            <button (click)="deleteClient(client.ID)" class="btn btn-delete">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
