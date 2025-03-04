@@ -48,7 +48,7 @@ export class ProductListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.productPut.updateProduct(result.id, result).subscribe(() => {
-          this.loadProducts(); // Vuelve a cargar todos los productos después de la actualización
+          this.loadProducts();
         });
       }
     });
@@ -56,7 +56,7 @@ export class ProductListComponent implements OnInit {
 
   deleteProduct(id: number): void {
     this.productDelete.deleteProduct(id).subscribe(() => {
-      this.loadProducts(); // Vuelve a cargar todos los productos después de la eliminación
+      this.loadProducts(); 
     });
   }
 }

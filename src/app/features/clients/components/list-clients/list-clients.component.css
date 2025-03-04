@@ -56,6 +56,15 @@
     color: white;
   }
   
+  .product-list .btn-sendNotification {
+    background-color: rgb(46, 70, 108);
+    color: white;
+  }
+  
   .product-list .btn-delete:hover {
     background-color: #c82333;
+  }
+
+  .product-list .btn-sendNotification:hover {
+    background-color: #2368c8;
   }

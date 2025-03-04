@@ -19,4 +19,7 @@ export class HeaderComponent {
   GoProducts(){
     this.route.navigate(['/listaProductos']);
   }
+  GoClients(){
+    this.route.navigate(['/clients']);
+  }
 }

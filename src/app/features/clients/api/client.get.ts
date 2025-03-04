@@ -13,8 +13,8 @@ export class ClientGetAll {
     constructor(private http: HttpClient) { }
 
     getClients():Observable<Client[]> {
-        return this.http.get<({'lista de clientes': Client[]})>(this.API_URL).pipe(
-            map(response => response['lista de clientes'] || []
+        return this.http.get<({'Clientes': Client[]})>(this.API_URL).pipe(
+            map(response => response['Clientes'] || []
         )
     );
     }

@@ -28,13 +28,11 @@ export class ClientEditDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Client
   ) {
     this.clientForm = this.fb.group({
-      id: [data.ID],
-      name: [data.Name, Validators.required],
-      lastname: [data.LastName, [Validators.required, Validators.email]],
-      email: [data.Email, [Validators.required, Validators.email]],
+      id: [data.id],
+      name: [data.name, Validators.required],
+      last_name: [data.last_name, [Validators.required,]],
+      email: [data.email, [Validators.required, Validators.email]],
   })
-
-
 
 
 }

@@ -7,17 +7,19 @@
           <th>Nombre</th>
           <th>Apellidos</th>
           <th>Email</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let client of clients">
-          <td>{{ client.ID }}</td>
-          <td>{{ client.Name }}</td>
-          <td>{{ client.LastName| currency }}</td>
-          <td>{{ client.Email }}</td>
+          <td>{{ client.id }}</td>
+          <td>{{ client.name }}</td>
+          <td>{{ client.last_name}}</td>
+          <td>{{ client.email }}</td>
           <td>
             <button (click)="editClient(client)" class="btn btn-edit">Editar</button>
-            <button (click)="deleteClient(client.ID)" class="btn btn-delete">Eliminar</button>
+            <button (click)="deleteClient(client.id)" class="btn btn-delete">Eliminar</button>
+            <button (click)="sendNotification(client.id)" class="btn btn-sendNotification">Enviar Notificacion</button>
           </td>
         </tr>
       </tbody>

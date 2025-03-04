@@ -17,4 +17,7 @@ export class HomeComponent {
   products(){
     this.router.navigate(['/products']);
   }
+  clients(){
+    this.router.navigate(['/clients']);
+  }
 }

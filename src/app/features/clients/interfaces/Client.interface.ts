@@ -1,6 +1,6 @@
 export interface Client {
-    ID:       number
-	Name:    string
-	LastName: string 
-	Email:    string 
+    id:       number
+	name:    string
+	last_name: string 
+	email:    string 
 }

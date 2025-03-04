@@ -12,7 +12,7 @@ export class ClientFormService {
         return this.fb.group({
             id: [null],
             name: ['',Validators.required],
-            lastname:['',Validators.required],
+            last_name:['',Validators.required],
             email: ['',Validators.required]
         });
     }
@@ -21,7 +21,7 @@ export class ClientFormService {
         form.reset({
             id: null,
             name: '',
-            lastname: '',
+            last_name: '',
             email: ''
         });
     }
