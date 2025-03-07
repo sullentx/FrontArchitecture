@@ -8,6 +8,8 @@ import { ClientPut } from '../../api/client.put';
 import { DeleteClient } from '../../api/client.delete';
 import { ClientEditDialogComponent } from '../client-edit-dialog/client-edit-dialog.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ClientDialogSendNotificationComponent } from '../client-dialog-send-notification/client-dialog-send-notification.component';
+import { NotificationPost } from '../../api/notification.post';
 
 @Component({
   selector: 'app-list-clients',
@@ -22,7 +24,8 @@ export class ListClientsComponent  implements OnInit{
     private dialog: MatDialog,
     private clientPut: ClientPut,
     private clientDelete:DeleteClient,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private notificationPost: NotificationPost
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +47,6 @@ export class ListClientsComponent  implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.clientPut.updateClient(result.id, result).subscribe(
-          // Éxito
           () => {
             this.loadClients();
             this.snackBar.open('Cliente actualizado con éxito', 'Cerrar', {
@@ -54,7 +56,6 @@ export class ListClientsComponent  implements OnInit{
               panelClass: ['success-snackbar']
             });
           },
-          // Error
           (error) => {
             console.error('Error al actualizar el cliente:', error);
             this.snackBar.open('No se pudo actualizar el cliente', 'Cerrar', {
@@ -75,7 +76,7 @@ export class ListClientsComponent  implements OnInit{
       () => {
         this.loadClients();
         this.snackBar.open('Cliente eliminado con éxito', 'Cerrar', {
-          duration: 3000, // 3 segundos
+          duration: 3000, 
           horizontalPosition: 'center',
           verticalPosition: 'bottom',
           panelClass: ['success-snackbar']
@@ -84,7 +85,7 @@ export class ListClientsComponent  implements OnInit{
       (error) => {
         console.error('Error al eliminar el cliente:', error);
         this.snackBar.open('No se pudo eliminar el cliente', 'Cerrar', {
-          duration: 5000, // 5 segundos
+          duration: 5000, 
           horizontalPosition: 'center',
           verticalPosition: 'bottom',
           panelClass: ['error-snackbar']
@@ -93,7 +94,36 @@ export class ListClientsComponent  implements OnInit{
     );
   }
 
-  sendNotification(id:number):void {
-    
+  sendNotification(client: Client): void {
+    const dialogRef = this.dialog.open(ClientDialogSendNotificationComponent, {
+      width: '400px',
+      data: client
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.notificationPost.createNotification(result).subscribe(
+          () => {
+            this.snackBar.open('Notificación enviada con éxito', 'Cerrar', {
+              duration: 3000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              panelClass: ['success-snackbar']
+            });
+          },
+          (error) => {
+            console.error('Error al enviar la notificación:', error);
+            this.snackBar.open('No se pudo enviar la notificación', 'Cerrar', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              panelClass: ['error-snackbar']
+            });
+          }
+        );
+      }
+    });
   }
+
 }
+

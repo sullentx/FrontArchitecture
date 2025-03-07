@@ -1,14 +1,14 @@
-<h2 mat-dialog-title>Editar Producto</h2>
+<h2 mat-dialog-title>Contenido de la Notificacion</h2>
 <mat-dialog-content>
-  <form [formGroup]="clientForm">
+  <form [formGroup]="notificationForm">
     <mat-form-field>
       <mat-label>Descripcion de la Notificacion</mat-label>
       <input matInput formControlName="content">
-      <mat-error *ngIf="clientForm.get('content')?.invalid">Descripcion requerida</mat-error>
+      <mat-error *ngIf="notificationForm.get('content')?.invalid">Descripcion requerida</mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="close()">Cancelar</button>
-  <button mat-button (click)="save()" [disabled]="clientForm.invalid">Guardar</button>
+  <button mat-button (click)="sendNotification()" [disabled]="notificationForm.invalid">Guardar</button>
 </mat-dialog-actions>

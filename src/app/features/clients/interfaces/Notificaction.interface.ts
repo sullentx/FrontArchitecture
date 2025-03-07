@@ -1,5 +1,5 @@
 export interface Notification {
-	id:    number,
 	client_id:number,
-	content: string 
+	client_name: string,
+	notification_content: string 
 }
