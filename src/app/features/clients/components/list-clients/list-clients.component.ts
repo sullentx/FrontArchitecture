@@ -104,7 +104,6 @@ sendNotification(client: Client): void {
 
   dialogRef.afterClosed().subscribe(result => {
     if (result) {
-      // Mostrar mensaje de que se está enviando la notificación
       this.snackBar.open('Enviando notificación...', '', {
         duration: 1500,
         horizontalPosition: 'center',
@@ -113,18 +112,15 @@ sendNotification(client: Client): void {
 
       this.notificationPost.createNotification(result).subscribe(
         () => {
-          // Mostrar mensaje de que estamos verificando la entrega
           this.snackBar.open('Notificación enviada, verificando entrega...', '', {
             duration: 2000,
             horizontalPosition: 'center',
             verticalPosition: 'bottom'
           });
 
-          // Iniciar short polling para buscar la notificación
           this.notificationGet.pollForNewNotifications(client.id, 5, 2000).subscribe(
             (notifications) => {
               if (notifications && notifications.length > 0) {
-                // Notificación encontrada
                 this.snackBar.open('Notificación entregada con éxito', 'Cerrar', {
                   duration: 3000,
                   horizontalPosition: 'center',
@@ -132,7 +128,6 @@ sendNotification(client: Client): void {
                   panelClass: ['success-snackbar']
                 });
               } else {
-                // No se encontró notificación después de los intentos
                 this.snackBar.open('No se pudo confirmar la entrega de la notificación', 'Cerrar', {
                   duration: 3000,
                   horizontalPosition: 'center',

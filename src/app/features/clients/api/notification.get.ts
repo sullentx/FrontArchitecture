@@ -33,7 +33,6 @@ export class NotificationGet {
   getClientNotifications(clientId: number): Observable<any[]> {
     return this.getAllNotifications().pipe(
       map(notifications => {
-        // Filtrar las notificaciones por client_id
         return notifications.filter((n: any) => n.client_id === clientId);
       })
     );
