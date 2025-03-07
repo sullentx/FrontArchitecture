@@ -3,4 +3,5 @@ export const envionment = {
     productsUrl: 'http://localhost:8080/products',
     notificationsUrl: 'http://localhost:8080/notifications',
     clientsUrl: 'http://localhost:8080/clients',
+    notificationsUrlConsumer: 'http://localhost:8082/notifications',
 }

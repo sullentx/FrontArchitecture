@@ -10,6 +10,7 @@ import { ClientEditDialogComponent } from '../client-edit-dialog/client-edit-dia
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ClientDialogSendNotificationComponent } from '../client-dialog-send-notification/client-dialog-send-notification.component';
 import { NotificationPost } from '../../api/notification.post';
+import { NotificationGet } from '../../api/notification.get';
 
 @Component({
   selector: 'app-list-clients',
@@ -25,7 +26,8 @@ export class ListClientsComponent  implements OnInit{
     private clientPut: ClientPut,
     private clientDelete:DeleteClient,
     private snackBar: MatSnackBar,
-    private notificationPost: NotificationPost
+    private notificationPost: NotificationPost,
+    private notificationGet : NotificationGet
   ) {}
 
   ngOnInit(): void {
@@ -93,37 +95,76 @@ export class ListClientsComponent  implements OnInit{
       }
     );
   }
+  // list-clients.component.ts
+sendNotification(client: Client): void {
+  const dialogRef = this.dialog.open(ClientDialogSendNotificationComponent, {
+    width: '400px',
+    data: client
+  });
 
-  sendNotification(client: Client): void {
-    const dialogRef = this.dialog.open(ClientDialogSendNotificationComponent, {
-      width: '400px',
-      data: client
-    });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.notificationPost.createNotification(result).subscribe(
-          () => {
-            this.snackBar.open('Notificación enviada con éxito', 'Cerrar', {
-              duration: 3000,
-              horizontalPosition: 'center',
-              verticalPosition: 'bottom',
-              panelClass: ['success-snackbar']
-            });
-          },
-          (error) => {
-            console.error('Error al enviar la notificación:', error);
-            this.snackBar.open('No se pudo enviar la notificación', 'Cerrar', {
-              duration: 5000,
-              horizontalPosition: 'center',
-              verticalPosition: 'bottom',
-              panelClass: ['error-snackbar']
-            });
-          }
-        );
-      }
-    });
-  }
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // Mostrar mensaje de que se está enviando la notificación
+      this.snackBar.open('Enviando notificación...', '', {
+        duration: 1500,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom'
+      });
+
+      this.notificationPost.createNotification(result).subscribe(
+        () => {
+          // Mostrar mensaje de que estamos verificando la entrega
+          this.snackBar.open('Notificación enviada, verificando entrega...', '', {
+            duration: 2000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom'
+          });
+
+          // Iniciar short polling para buscar la notificación
+          this.notificationGet.pollForNewNotifications(client.id, 5, 2000).subscribe(
+            (notifications) => {
+              if (notifications && notifications.length > 0) {
+                // Notificación encontrada
+                this.snackBar.open('Notificación entregada con éxito', 'Cerrar', {
+                  duration: 3000,
+                  horizontalPosition: 'center',
+                  verticalPosition: 'bottom',
+                  panelClass: ['success-snackbar']
+                });
+              } else {
+                // No se encontró notificación después de los intentos
+                this.snackBar.open('No se pudo confirmar la entrega de la notificación', 'Cerrar', {
+                  duration: 3000,
+                  horizontalPosition: 'center',
+                  verticalPosition: 'bottom',
+                  panelClass: ['warning-snackbar']
+                });
+              }
+            },
+            (error) => {
+              console.error('Error en el polling:', error);
+              this.snackBar.open('Error al verificar la entrega', 'Cerrar', {
+                duration: 3000,
+                horizontalPosition: 'center',
+                verticalPosition: 'bottom',
+                panelClass: ['error-snackbar']
+              });
+            }
+          );
+        },
+        (error) => {
+          console.error('Error al enviar la notificación:', error);
+          this.snackBar.open('No se pudo enviar la notificación', 'Cerrar', {
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            panelClass: ['error-snackbar']
+          });
+        }
+      );
+    }
+  });
+}
 
 }
 
